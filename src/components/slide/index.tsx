@@ -1,76 +1,31 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectFade, Navigation, Pagination } from "swiper";
+import { Flex } from '@chakra-ui/react';
+import SwiperCore, { Navigation, Pagination, Scrollbar, A11y, Autoplay } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { ContinentProps } from '../../types/types';
+import { SlideItems } from './slideItems';
 
-import { SlideItems } from "./slideItems";
-import { Box, ContainerProps, Flex, Heading, Text } from "@chakra-ui/react";
-import { continentsTypes } from "../../types/types";
-import { useFetch } from "../hook/useFetching";
-import { useState } from "react";
-import { GetStaticProps } from "next";
-import api from "../../service/api";
+SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Autoplay]);
 
 
-export function SlideContinents ({continents}:continentsTypes){
+export function SlideContinents({ continents }: ContinentProps) {
 
-  console.log(continents)
-  
-  // const { data } = useFetch<continentsTypes[]>(`continents`)
-  // const [index, setIndex] = useState('1')
- 
-  // if(!data){
-  //   <p>Loading....</p>
-  // }
-  
-  
-  return(
-    <Flex display="flex" direction="column" align="center" mt="126px">
-      <Box mb="96px" textAlign="center">
-        <hr  className="line" />
-        <Heading fontSize={["xl", "2xl","3xl", "4xl"]} color="gray.500" alignItems="center" fontWeight="500">
-          Vamos nessa?
-        </Heading>
-        <Text fontSize={["xl", "2xl","3xl","4xl"]} color="gray.500" alignItems="center" fontWeight="500">
-          Então escolha seu continente
-        </Text>
-      </Box>
-       
-
+  return (
+    <Flex w="100%" h={["250px","450px"]} maxW="1240px" mx="auto" mb={["5","10"]}>
     <Swiper
-     className="mySwiper"
-      spaceBetween={30}
-      effect={"fade"}
-      navigation={true}
-      pagination={{
-        clickable: true,
-      }}
-      // onSlideChange={(swiper) => setIndex(String(swiper.activeIndex + 1))}
-      modules={[EffectFade, Navigation, Pagination]}
-    >
+      className="mySwiper"
+      slidesPerView={1}
+      navigation
+      pagination={{ clickable: true }}
+      style={{width: '100%', flex: '1'}}
+    > 
 
-    {/* {data?.map((continent) =>(
-      <SwiperSlide className="slide" key={continent.id}>
-         <SlideItems 
-         id={index} 
-         text={continent.title} 
-         image={continent.banner} 
-         continentName={continent.name}/>
-      </SwiperSlide>
-    ))} */}
+      {continents.map(continent => (
+        <SwiperSlide className="slide" key={continent.slug}>
+          <SlideItems continentName={continent.name} text={continent.title} image={continent.image} slug={continent.slug}/>
+        </SwiperSlide>
+      ))}
+
     </Swiper>
   </Flex>
-  )
+  );
 }
-
-export const getStaticProps: GetStaticProps = async () =>{
-  
-  const { data } = await api.get<ContainerProps[]>('continents');
-
-  const continents = data
-
-  return{
-    props:{
-      continents
-    },
-    revalidate:60,
-  }
-} 

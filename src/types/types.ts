@@ -1,26 +1,36 @@
-interface cytiesType {
-  id: number;
-  name: string;
-  city: string;
-  flag: string;
-  image: string;
-}
 
-export interface continentsTypes {
+export interface ContinentProps {
   continents: {
-    id: string;
     slug: string;
     name: string;
     title: string;
-    descriptions: string;
-    banner: string;
-    banner2: string;
+    image: string;
+  }[];
+}
 
-    info: {
-      number: number;
-      languages: number;
-      cyties: number;
-    };
-    cyties: cytiesType[];
+export interface CitiesProps {
+  city: string;
+  country: string;
+  thumbnail:string;
+  countryimage:{
+    url:string
+  };
+  flag:{
+    url:string
   };
 }
+
+export interface ContinentsTypes {
+  continent: {
+    slug: string;
+    title: string;
+    description: string;
+    banner_image: string;
+    countries: number;
+    languages: number;
+    cities: number;
+    cities_list: string;
+    cities100:CitiesProps[]
+  }
+}
+

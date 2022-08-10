@@ -1,20 +1,43 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import { Header } from '../components/header'
-import { Banner } from '../components/banner';
-import { Main } from './main';
+import type { GetStaticProps, NextPage } from "next";
+import { Header } from "../components/header";
+import { Banner } from "../components/banner";
+import { Main } from "./main";
+import Prismic from "@prismicio/client";
+import { getPrismicClient } from "../service/prismic";
+import { ContinentProps } from "../types/types";
 
-const Home: NextPage = () => {
+
+const Home = ({ continents }: ContinentProps) => {
   return (
-    <div>
-      <Head>
-        <title>World Trip</title>
-      </Head>
+    <>
       <Header />
       <Banner />
-      <Main />
-     </div>
-  )
-}
+      <Main continents={continents} />
+    </>
+  );
+};
 
-export default Home
+export default Home;
+
+export const getStaticProps: GetStaticProps = async () => {
+  const prismic = getPrismicClient();
+
+  const response = await prismic.query([
+    Prismic.predicates.at("document.type", "continent"),
+  ]);
+
+  const continents = response.results.map((continent) => {
+    return {
+      slug: continent.uid,
+      name: continent.data.name,
+      title: continent.data.title,
+      image: continent.data.continentimage.url,
+    };
+  });
+
+  return {
+    props: {
+      continents,
+    },
+  };
+};

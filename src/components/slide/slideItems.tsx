@@ -1,49 +1,58 @@
-import { Flex, Box, Heading, Text,Link} from "@chakra-ui/react";
-import { useEffect } from "react";
-import { continentsTypes } from "../../types/types";
+import { Flex, Heading, Text, Link } from "@chakra-ui/react";
 
 interface SlideItemProps {
-  id:string,
   text: string;
   image: string;
+  slug: string;
   continentName: string;
 }
 
-export function SlideItems({ continentName, text, image,id}: SlideItemProps) {
-
+export function SlideItems({
+  continentName,
+  text,
+  image,
+  slug,
+}: SlideItemProps) {
+  console.log(slug);
   return (
     <Flex
       w="100%"
-      h={["100%", "450px", "100%"]}
-      bgImage={`url(${image})`}
-      bgPosition={["100% 20%", "100% 20%", "100% 50%"]}
+      h="100%"
+      align="center"
+      justify="center"
+      direction="column"
+      bgImage={`url('${image}')`}
+      bgPosition="100% 30%"
       bgRepeat="no-repeat"
       bgSize="cover"
+      textAlign="center"
     >
       <Flex
-        bgGradient=" linear-gradient(0deg, rgba(28, 20, 1, 0.75), rgba(28, 20, 1, 0.65))"
+        bgGradient=" linear-gradient(0deg, rgba(10, 0, 5, 0.55), rgba(10, 0, 5, 0.55))"
         w="100%"
         color="gray.400"
         display="flex"
         justifyContent="center"
         alignItems="center"
+        h="100%"
       >
-        <Box textAlign="center">
-          <Link href={`/continent`} style={{ textDecoration: "none" }}>
-           <button>
-              <Heading
-                fontSize={["3xl", "4xl", "5xl"]}
-                color="white.900"
-                fontWeight="700"
-              >
-                {continentName}
-              </Heading>
-              <Text mt="16px" fontSize={["md", "lg", "xl"]} fontWeight="600">
-                {text}
-              </Text>
-           </button>
-          </Link>
-        </Box>
+        <Link href={`/continent/${slug}`} style={{ textDecoration: "none" }}>
+          <Heading
+            fontSize={["3xl", "4xl", "5xl"]}
+            color="gray.100"
+            fontWeight="bold"
+          >
+            {continentName}
+          </Heading>
+          <Text
+            fontWeight="bold"
+            color="gray.300"
+            fontSize={["0.8rem", "1xl", "2xl"]}
+            mt={["2", "4"]}
+          >
+            {text}
+          </Text>
+        </Link>
       </Flex>
     </Flex>
   );
